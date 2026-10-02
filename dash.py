@@ -153,10 +153,10 @@ def carregar_dados():
         df["mes"] = df["data_venda"].dt.month
 
     # Valor
-    if "valor_total" in df.columns:
+    if "ValorVenda" in df.columns:
 
-        df["valor_total"] = pd.to_numeric(
-            df["valor_total"],
+        df["ValorVenda"] = pd.to_numeric(
+            df["ValorVenda"],
             errors="coerce"
         ).fillna(0)
 
@@ -196,10 +196,10 @@ if df is None:
     st.stop()
 
 
-if "valor_total" not in df.columns:
+if "ValorVenda" not in df.columns:
 
     st.error(
-        "O CSV precisa possuir a coluna valor_total."
+        "O CSV precisa possuir a coluna ValorVenda."
     )
 
     st.stop()
@@ -326,7 +326,7 @@ if "canal" in df.columns:
 # KPIs
 # ============================================================
 
-total_vendas = df_filtrado["valor_total"].sum()
+total_vendas = df_filtrado["ValorVenda"].sum()
 
 numero_vendas = len(df_filtrado)
 
@@ -464,18 +464,18 @@ with col1:
         vendas_ano = (
             df_filtrado
             .groupby("ano", as_index=False)
-            ["valor_total"]
+            ["ValorVenda"]
             .sum()
         )
 
         fig_ano = px.bar(
             vendas_ano,
             x="ano",
-            y="valor_total",
+            y="ValorVenda",
             title="Faturamento por Ano",
             labels={
                 "ano": "Ano",
-                "valor_total": "Faturamento"
+                "ValorVenda": "Faturamento"
             }
         )
 
@@ -511,10 +511,10 @@ with col2:
                 "categoria",
                 as_index=False
             )
-            ["valor_total"]
+            ["ValorVenda"]
             .sum()
             .sort_values(
-                "valor_total",
+                "ValorVenda",
                 ascending=False
             )
         )
@@ -522,7 +522,7 @@ with col2:
         fig_categoria = px.pie(
             vendas_categoria,
             names="categoria",
-            values="valor_total",
+            values="ValorVenda",
             title="Participação por Categoria",
             hole=0.65,
             color_discrete_sequence=[
@@ -571,7 +571,7 @@ if "data_venda" in df_filtrado.columns:
         )
         .set_index("data_venda")
         .resample("ME")
-        ["valor_total"]
+        ["ValorVenda"]
         .sum()
         .reset_index()
     )
@@ -579,11 +579,11 @@ if "data_venda" in df_filtrado.columns:
     fig_linha = px.line(
         vendas_mes,
         x="data_venda",
-        y="valor_total",
+        y="ValorVenda",
         title="Evolução do Faturamento",
         labels={
             "data_venda": "",
-            "valor_total": "Faturamento"
+            "ValorVenda": "Faturamento"
         }
     )
 
@@ -634,17 +634,17 @@ with c1:
                 "estado",
                 as_index=False
             )
-            ["valor_total"]
+            ["ValorVenda"]
             .sum()
             .sort_values(
-                "valor_total",
+                "ValorVenda",
                 ascending=True
             )
         )
 
         fig_estado = px.bar(
             estado,
-            x="valor_total",
+            x="ValorVenda",
             y="estado",
             orientation="h",
             title="Faturamento por Estado"
@@ -674,10 +674,10 @@ with c2:
                 "canal",
                 as_index=False
             )
-            ["valor_total"]
+            ["ValorVenda"]
             .sum()
             .sort_values(
-                "valor_total",
+                "ValorVenda",
                 ascending=False
             )
         )
@@ -685,7 +685,7 @@ with c2:
         fig_canal = px.bar(
             canal,
             x="canal",
-            y="valor_total",
+            y="ValorVenda",
             title="Faturamento por Canal"
         )
 
